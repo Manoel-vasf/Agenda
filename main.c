@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
 
 // Função responsável por listar os agendamentos
 
@@ -279,6 +280,10 @@ int main() {
   int comando01, comando02;
   FILE *pont_file;
 
+  // Sentando a localidade
+
+  setlocale(LC_ALL, "Portuguese");
+
   while (comando01 != 0) {
 
     //  Função para limpar o console
@@ -470,6 +475,7 @@ int main() {
            break;
       }
     }
+
   }
   
   return 0;
