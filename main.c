@@ -1,7 +1,7 @@
+#include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <locale.h>
 
 // Função responsável por listar os agendamentos
 
@@ -16,9 +16,11 @@ void listar(char semana[15]) {
 
   while (fgets(listagem, 150, pont_file) != NULL) {
 
-    printf("\t\t─────────────────────────────────────────────────────────────────────────────────────\n");
+    printf("\t\t───────────────────────────────────────────────────────────────"
+           "──────────────────────\n");
     printf("                                           %s", listagem);
-    printf("\t\t─────────────────────────────────────────────────────────────────────────────────────\n");
+    printf("\t\t───────────────────────────────────────────────────────────────"
+           "──────────────────────\n");
   }
 
   fclose(pont_file);
@@ -70,18 +72,20 @@ void adicionar(char semana[15]) {
 
 // Função responsável por editar os agendamentos
 
-void editar(char semana[15]){
-  
+void editar(char semana[15]) {
+
   char excluir[150], comparacao[150], editar[150], caractere;
   int count;
   FILE *pont_file01;
   FILE *pont_file02;
 
-  printf("\n\nHorário que você quer editar (obs: o formato da hora é 00:00)\n\n");
-  
+  printf(
+      "\n\nHorário que você quer editar (obs: o formato da hora é 00:00)\n\n");
+
   scanf("%s", &excluir[0]);
-  
-  printf("\n\nDescrição que você quer editar (obs: colocar um ponto no final da frase)\n\n");
+
+  printf("\n\nDescrição que você quer editar (obs: colocar um ponto no final "
+         "da frase)\n\n");
 
   // For que ler a descrição que o usuário digitou para o agendamento
 
@@ -100,23 +104,24 @@ void editar(char semana[15]){
 
   excluir[5] = ' ';
 
-  // Zerando a variável caractere 
-  
-  caractere ='a';
+  // Zerando a variável caractere
+
+  caractere = 'a';
 
   printf("\n\nQual é o novo horário (obs: o formato da hora é 00:00)\n\n");
-  
+
   scanf("%s", &editar[0]);
-  
-  printf("\n\nQual é a nova descrição (obs: colocar um ponto no final da frase)\n\n");
+
+  printf("\n\nQual é a nova descrição (obs: colocar um ponto no final da "
+         "frase)\n\n");
 
   // For que ler a descrição que o usuário digitou para o agendamento
 
   for (count = 5; caractere != '.'; count++) {
 
-        scanf("%c", &caractere);
+    scanf("%c", &caractere);
 
-        editar[count] = caractere;
+    editar[count] = caractere;
   }
 
   // Colocando o \0 no lugar do ponto indicando o final da string
@@ -127,47 +132,46 @@ void editar(char semana[15]){
 
   editar[5] = ' ';
 
-  // Abrindo os arquivos necessários para a operação do while 
+  // Abrindo os arquivos necessários para a operação do while
 
   pont_file01 = fopen(semana, "r");
   pont_file02 = fopen("temp.txt", "a");
 
-  // While que transfere os dados do arquivo semana para o arquivo temp.txt sem o agendamento que o usuário quer excluir 
+  // While que transfere os dados do arquivo semana para o arquivo temp.txt sem
+  // o agendamento que o usuário quer excluir
 
   while (fgets(comparacao, 150, pont_file01) != NULL) {
 
-    if(strcmp(excluir, comparacao) != -10){
-      
-       fprintf(pont_file02, "%s", comparacao);
-      
-    }else{
+    if (strcmp(excluir, comparacao) != -10) {
 
-       fprintf(pont_file02, "%s\n", editar);
-       
+      fprintf(pont_file02, "%s", comparacao);
+
+    } else {
+
+      fprintf(pont_file02, "%s\n", editar);
     }
-    
   }
 
   // Fechando os arquivos
-  
+
   fclose(pont_file01);
   fclose(pont_file02);
-  
+
   // Excluindo o arquivo semana
-  
+
   remove(semana);
 
-  // Abrindo os arquivos necessários para a operação do while 
+  // Abrindo os arquivos necessários para a operação do while
 
   pont_file01 = fopen(semana, "a");
   pont_file02 = fopen("temp.txt", "r");
 
-  // While que transfere os dados do arquivo temp.txt para o arquivo semana sem o agendamento que o usuário queria excluir 
+  // While que transfere os dados do arquivo temp.txt para o arquivo semana sem
+  // o agendamento que o usuário queria excluir
 
   while (fgets(comparacao, 150, pont_file02) != NULL) {
 
-         fprintf(pont_file01, "%s", comparacao);    
-    
+    fprintf(pont_file01, "%s", comparacao);
   }
 
   // Fechando os arquivos
@@ -178,7 +182,6 @@ void editar(char semana[15]){
   // Excluindo o temp.txt
 
   remove("temp.txt");
-   
 }
 
 // Função responsável por excluir os agendamentos
@@ -191,9 +194,9 @@ void excluir(char semana[15]) {
   FILE *pont_file02;
 
   printf("\n\nHorário (obs: o formato da hora é 00:00)\n\n");
-  
+
   scanf("%s", &excluir[0]);
-  
+
   printf("\n\nDescrição (obs: colocar ponto no final da frase)\n\n");
 
   // For que ler a descrição que o usuário digitou para o agendamento
@@ -213,43 +216,42 @@ void excluir(char semana[15]) {
 
   excluir[5] = ' ';
 
-  // Abrindo os arquivos necessários para a operação do while 
+  // Abrindo os arquivos necessários para a operação do while
 
   pont_file01 = fopen(semana, "r");
   pont_file02 = fopen("temp.txt", "a");
 
-  // While que transfere os dados do arquivo semana para o arquivo temp.txt sem o agendamento que o usuário quer excluir 
+  // While que transfere os dados do arquivo semana para o arquivo temp.txt sem
+  // o agendamento que o usuário quer excluir
 
   while (fgets(comparacao, 150, pont_file01) != NULL) {
 
-    if(strcmp(excluir, comparacao) != -10){
-      
-       fprintf(pont_file02, "%s", comparacao);
-      
+    if (strcmp(excluir, comparacao) != -10) {
+
+      fprintf(pont_file02, "%s", comparacao);
     }
-    
   }
 
   // Fechando os arquivos
-  
+
   fclose(pont_file01);
   fclose(pont_file02);
-  
+
   // Excluindo o arquivo semana
-  
+
   remove(semana);
 
-  // Abrindo os arquivos necessários para a operação do while 
+  // Abrindo os arquivos necessários para a operação do while
 
   pont_file01 = fopen(semana, "a");
   pont_file02 = fopen("temp.txt", "r");
 
-  // While que transfere os dados do arquivo temp.txt para o arquivo semana sem o agendamento que o usuário queria excluir 
+  // While que transfere os dados do arquivo temp.txt para o arquivo semana sem
+  // o agendamento que o usuário queria excluir
 
   while (fgets(comparacao, 150, pont_file02) != NULL) {
 
-         fprintf(pont_file01, "%s", comparacao);    
-    
+    fprintf(pont_file01, "%s", comparacao);
   }
 
   // Fechando os arquivos
@@ -260,7 +262,6 @@ void excluir(char semana[15]) {
   // Excluindo o temp.txt
 
   remove("temp.txt");
-  
 }
 
 // Função que printa os comandos dos dias da semana
@@ -281,111 +282,109 @@ int main() {
   FILE *pont_file;
 
   // Sentando a localidade usando a localidade padrão do sistema
-  
+
   setlocale(LC_ALL, "");
 
   while (comando01 != 0) {
 
     //  Função para limpar o console
 
-    if(comando01 ==-1){
-      
+    if (comando01 == -1) {
+
       system("clear");
-    
     }
 
     printf("\n\n        \t\t\t\t\t\t\t╔════════════════════════════╗\n");
     printf("        \t\t\t\t\t\t\t║      Agenda da Semana      ║\n");
     printf("        \t\t\t\t\t\t\t╚════════════════════════════╝\n\n\n");
-    printf("|1|-> Listar Agenda |2|-> Adicionar Agenda |3|-> Editar Agenda |4|-> Excluir Agenda |-1|-> Limpar |0|-> Sair\n\n");
+    printf("|1|-> Listar Agenda |2|-> Adicionar Agenda |3|-> Editar Agenda "
+           "|4|-> Excluir Agenda |-1|-> Limpar |0|-> Sair\n\n");
 
     scanf("%d", &comando01);
 
     // If que chama a função listar
 
     if (comando01 == 1) {
-      
-        printsemana();
 
-        scanf("%d", &comando02);
+      printsemana();
 
-        // Switch case que chama a função listar conforme o número do dia da
-        // semana que foi digitado
+      scanf("%d", &comando02);
 
-        switch (comando02) {
+      // Switch case que chama a função listar conforme o número do dia da
+      // semana que foi digitado
 
-        case 1:
-          listar("segunda.txt");
-          break;
+      switch (comando02) {
 
-        case 2:
-          listar("terça.txt");
-          break;
+      case 1:
+        listar("segunda.txt");
+        break;
 
-        case 3:
-          listar("quarta.txt");
-          break;
+      case 2:
+        listar("terça.txt");
+        break;
 
-        case 4:
-          listar("quinta.txt");
-          break;
+      case 3:
+        listar("quarta.txt");
+        break;
 
-        case 5:
-          listar("sexta.txt");
-          break;
+      case 4:
+        listar("quinta.txt");
+        break;
 
-        case 6:
-          listar("sábado.txt");
-          break;
+      case 5:
+        listar("sexta.txt");
+        break;
 
-        case 7:
-          listar("domingo.txt");
-          break;
+      case 6:
+        listar("sabado.txt");
+        break;
 
+      case 7:
+        listar("domingo.txt");
+        break;
       }
     }
 
     // If que chama a função adicionar
-    
+
     if (comando01 == 2) {
 
-         printsemana();
+      printsemana();
 
-         scanf("%d", &comando02);
+      scanf("%d", &comando02);
 
-         // Switch case que chama a função adicionar conforme o número do dia da
-         // semana que foi digitado
+      // Switch case que chama a função adicionar conforme o número do dia da
+      // semana que foi digitado
 
-         switch (comando02) {
+      switch (comando02) {
 
-         case 1:
-           adicionar("segunda.txt");
-           break;
+      case 1:
+        adicionar("segunda.txt");
+        break;
 
-         case 2:
-           adicionar("terça.txt");
-           break;
+      case 2:
+        adicionar("terça.txt");
+        break;
 
-         case 3:
-           adicionar("quarta.txt");
-           break;
+      case 3:
+        adicionar("quarta.txt");
+        break;
 
-         case 4:
-           adicionar("quinta.txt");
-           break;
+      case 4:
+        adicionar("quinta.txt");
+        break;
 
-         case 5:
-           adicionar("sexta.txt");
-           break;
+      case 5:
+        adicionar("sexta.txt");
+        break;
 
-         case 6:
-           adicionar("sábado.txt");
-           break;
+      case 6:
+        adicionar("sabado.txt");
+        break;
 
-         case 7:
-           adicionar("domingo.txt");
-           break;
-
+      case 7:
+        adicionar("domingo.txt");
+        break;
       }
     }
 
@@ -393,90 +392,88 @@ int main() {
 
     if (comando01 == 3) {
 
-         printsemana();
+      printsemana();
 
-         scanf("%d", &comando02);
+      scanf("%d", &comando02);
 
-         // Switch case que chama a função adicionar conforme o número do dia da
-         // semana que foi digitado
+      // Switch case que chama a função adicionar conforme o número do dia da
+      // semana que foi digitado
 
-         switch (comando02) {
+      switch (comando02) {
 
-         case 1:
-           editar("segunda.txt");
-           break;
+      case 1:
+        editar("segunda.txt");
+        break;
 
-         case 2:
-           editar("terça.txt");
-           break;
+      case 2:
+        editar("terça.txt");
+        break;
 
-         case 3:
-           editar("quarta.txt");
-           break;
+      case 3:
+        editar("quarta.txt");
+        break;
 
-         case 4:
-           editar("quinta.txt");
-           break;
+      case 4:
+        editar("quinta.txt");
+        break;
 
-         case 5:
-           editar("sexta.txt");
-           break;
+      case 5:
+        editar("sexta.txt");
+        break;
 
-         case 6:
-           editar("sábado.txt");
-           break;
+      case 6:
+        editar("sabado.txt");
+        break;
 
-         case 7:
-           editar("domingo.txt");
-           break;
-
+      case 7:
+        editar("domingo.txt");
+        break;
       }
     }
 
     // If que chama a função excluir
-    
+
     if (comando01 == 4) {
 
-         printsemana();
+      printsemana();
 
-         scanf("%d", &comando02);
+      scanf("%d", &comando02);
 
-         // Switch case que chama a função excluir conforme o número do dia da
-         // semana que foi digitado
+      // Switch case que chama a função excluir conforme o número do dia da
+      // semana que foi digitado
 
-         switch (comando02) {
+      switch (comando02) {
 
-         case 1:
-           excluir("segunda.txt");
-           break;
+      case 1:
+        excluir("segunda.txt");
+        break;
 
-         case 2:
-           excluir("terça.txt");
-           break;
+      case 2:
+        excluir("terça.txt");
+        break;
 
-         case 3:
-           excluir("quarta.txt");
-           break;
+      case 3:
+        excluir("quarta.txt");
+        break;
 
-         case 4:
-           excluir("quinta.txt");
-           break;
+      case 4:
+        excluir("quinta.txt");
+        break;
 
-         case 5:
-           excluir("sexta.txt");
-           break;
+      case 5:
+        excluir("sexta.txt");
+        break;
 
-         case 6:
-           excluir("sábado.txt");
-           break;
+      case 6:
+        excluir("sabado.txt");
+        break;
 
-         case 7:
-           excluir("domingo.txt");
-           break;
+      case 7:
+        excluir("domingo.txt");
+        break;
       }
     }
-
   }
-  
+
   return 0;
 }
