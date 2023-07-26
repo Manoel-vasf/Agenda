@@ -280,9 +280,9 @@ int main() {
   int comando01, comando02;
   FILE *pont_file;
 
-  // Sentando a localidade
-
-  setlocale(LC_ALL, "Portuguese");
+  // Sentando a localidade usando a localidade padrão do sistema
+  
+  setlocale(LC_ALL, "");
 
   while (comando01 != 0) {
 
