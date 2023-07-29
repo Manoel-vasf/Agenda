@@ -40,7 +40,7 @@ void listar(char semana[15]) {
 
   // Se a quantidade de caracteres for igual a 6, vai ser impressa na tela a mensagem agenda vazia
 
-  if(num_char==6){
+  if(num_char==1){
 
        printf("\t\t─────────────────────────────────────────────────────────────────────────────────────\n");
        printf("                                        Sua agenda está vazia!!!\n");
