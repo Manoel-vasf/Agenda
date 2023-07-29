@@ -129,6 +129,8 @@ void editar(char semana[15]) {
   FILE *pont_file01;
   FILE *pont_file02;
 
+  listar(semana);
+
   printf(
       "\n\nHorário que você quer editar (obs: o formato da hora é 00:00)\n\n");
 
@@ -243,6 +245,8 @@ void excluir(char semana[15]) {
   int count;
   FILE *pont_file01;
   FILE *pont_file02;
+
+  listar(semana);
 
   printf("\n\nHorário (obs: o formato da hora é 00:00)\n\n");
 
