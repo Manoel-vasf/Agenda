@@ -3,6 +3,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Constantes responsáveis pelas cores usando o código escape ANSI 
+
+#define c_padrao "\033[0m"
+#define c_vermelha "\033[31m"
+#define c_verde "\033[32m"
+#define c_amarela "\033[33m"
+#define c_azul "\033[34m"
+#define c_ciano "\033[36m"
+
+
 // Função responsável por listar os agendamentos
 
 void listar(char semana[15]) {
@@ -17,11 +27,9 @@ void listar(char semana[15]) {
 
   while (fgets(listagem, 150, pont_file) != NULL) {
 
-    printf("\t\t───────────────────────────────────────────────────────────────"
-           "──────────────────────\n");
-    printf("                                           %s", listagem);
-    printf("\t\t───────────────────────────────────────────────────────────────"
-           "──────────────────────\n");
+    printf("\t\t%s─────────────────────────────────────────────────────────────────────────────────────%s\n", c_amarela, c_padrao);
+    printf("                                           %s%s%s",c_azul, listagem, c_padrao);
+    printf("\t\t%s─────────────────────────────────────────────────────────────────────────────────────%s\n", c_amarela, c_padrao);
   }
 
   fclose(pont_file);
@@ -99,11 +107,11 @@ void adicionar(char semana[15]) {
     
       fprintf(pont_file, "%s\n", agendamento);
 
-      printf("\n\n\n\t\t\t\t\t\t\t\tAgendamento adicionado com sucesso!!!\n\n");
+      printf("\n\n\n\t\t\t\t\t\t\t\t%sAgendamento adicionado com sucesso!!!%s\n\n", c_verde, c_padrao);
 
   } else{
     
-      printf("\n\n\n\t\t\t\t\t\t\t\t\tEsse agendamento já existe!!!\n\n");
+      printf("\n\n\n\t\t\t\t\t\t\t\t\t%sEsse agendamento já existe!!!%s\n\n", c_vermelha, c_padrao);
     
   }
 
@@ -133,9 +141,9 @@ void editar(char semana[15]) {
 
   for (count = 5; caractere != '.'; count++) {
 
-    scanf("%c", &caractere);
+        scanf("%c", &caractere);
 
-    excluir[count] = caractere;
+        excluir[count] = caractere;
   }
 
   // Colocando o \0 no lugar do ponto indicando o final da string
@@ -185,7 +193,7 @@ void editar(char semana[15]) {
 
     if (strcmp(excluir, comparacao) != -10) {
 
-      fprintf(pont_file02, "%s", comparacao);
+        fprintf(pont_file02, "%s", comparacao);
 
     } else {
 
@@ -212,7 +220,7 @@ void editar(char semana[15]) {
 
   while (fgets(comparacao, 150, pont_file02) != NULL) {
 
-    fprintf(pont_file01, "%s", comparacao);
+         fprintf(pont_file01, "%s", comparacao);
   }
 
   // Fechando os arquivos
@@ -223,6 +231,8 @@ void editar(char semana[15]) {
   // Excluindo o temp.txt
 
   remove("temp.txt");
+
+  printf("\n\n\n\t\t\t\t\t\t\t\t%sAgendamento editado com sucesso!!!%s\n\n", c_verde, c_padrao);
 }
 
 // Função responsável por excluir os agendamentos
@@ -303,6 +313,8 @@ void excluir(char semana[15]) {
   // Excluindo o temp.txt
 
   remove("temp.txt");
+
+  printf("\n\n\n\t\t\t\t\t\t\t\t%sAgendamento excluído com sucesso!!!%s\n\n", c_verde, c_padrao);
 }
 
 // Função que printa os comandos dos dias da semana
@@ -310,8 +322,8 @@ void excluir(char semana[15]) {
 void printsemana(void) {
 
   printf("\n\nQual é o dia da semana?\n\n");
-  printf("|1|-> Segunda |2|-> Terça |3|-> Quarta |4|-> Quinta |5|-> Sexta "
-         "|6|-> Sábado |7|-> Domingo\n\n\n");
+  printf("%s|1|-> Segunda |2|-> Terça |3|-> Quarta |4|-> Quinta |5|-> Sexta "
+         "|6|-> Sábado |7|-> Domingo%s\n\n", c_amarela, c_padrao);
 
   return;
 }
@@ -368,11 +380,11 @@ int main() {
       system("clear");
     }
 
-    printf("\n\n        \t\t\t\t\t\t\t╔════════════════════════════╗\n");
-    printf("        \t\t\t\t\t\t\t║      Agenda da Semana      ║\n");
-    printf("        \t\t\t\t\t\t\t╚════════════════════════════╝\n\n\n");
-    printf("|1|-> Listar Agenda |2|-> Adicionar Agenda |3|-> Editar Agenda "
-           "|4|-> Excluir Agenda |-1|-> Limpar |0|-> Sair\n\n");
+    printf("\n\n        \t\t\t\t\t\t\t%s╔════════════════════════════╗\n", c_ciano);
+    printf("        \t\t\t\t\t\t\t║      %sAgenda da Semana%s      ║\n", c_vermelha, c_ciano);
+    printf("        \t\t\t\t\t\t\t╚════════════════════════════╝%s\n\n\n",c_padrao);
+    printf("%s|1|-> Listar Agenda |2|-> Adicionar Agenda |3|-> Editar Agenda "
+           "|4|-> Excluir Agenda |-1|-> Limpar |0|-> Sair%s\n\n\n", c_verde, c_padrao);
 
     scanf("%d", &comando01);
 
