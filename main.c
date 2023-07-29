@@ -9,6 +9,7 @@ void listar(char semana[15]) {
 
   char listagem[150];
   FILE *pont_file;
+  int num_char=0;
 
   pont_file = fopen(semana, "r");
 
@@ -25,7 +26,21 @@ void listar(char semana[15]) {
 
   fclose(pont_file);
 
-  printf("\n");
+  // O strlen conta a quantidade de caracteres antes do \0  
+
+  num_char = strlen(listagem);
+
+  // Se a quantidade de caracteres for igual a 6, vai ser impressa na tela a mensagem agenda vazia
+
+  if(num_char==6){
+
+       printf("\t\t─────────────────────────────────────────────────────────────────────────────────────\n");
+       printf("                                        Sua agenda está vazia!!!\n");
+       printf("\t\t─────────────────────────────────────────────────────────────────────────────────────");
+    
+  }
+
+  printf("\n\n");
 
   return;
 }
@@ -34,7 +49,7 @@ void listar(char semana[15]) {
 
 void adicionar(char semana[15]) {
 
-  char agendamento[150], caractere;
+  char agendamento[150], comparacao[150], caractere;
   int count = 5;
   FILE *pont_file;
 
@@ -61,9 +76,36 @@ void adicionar(char semana[15]) {
 
   agendamento[5] = ' ';
 
+  // Filtro para ver se o agendamento já existe
+
+  pont_file = fopen(semana, "r");
+
+  while(fgets(comparacao, 150, pont_file) != NULL){
+
+        if (strcmp(agendamento, comparacao) == -10) {
+
+              break;
+    
+         } 
+  }
+
+  fclose(pont_file);
+
+  // Parte que coloca o agendamento dentro do arquivo e imprime o resultado dessa execução
+
   pont_file = fopen(semana, "a");
 
-  fprintf(pont_file, "%s\n", agendamento);
+  if(strcmp(agendamento, comparacao) != -10){
+    
+      fprintf(pont_file, "%s\n", agendamento);
+
+      printf("\n\n\n\t\t\t\t\t\t\t\tAgendamento adicionado com sucesso!!!\n\n");
+
+  } else{
+    
+      printf("\n\n\n\t\t\t\t\t\t\t\t\tEsse agendamento já existe!!!\n\n");
+    
+  }
 
   fclose(pont_file);
 
@@ -137,8 +179,7 @@ void editar(char semana[15]) {
   pont_file01 = fopen(semana, "r");
   pont_file02 = fopen("temp.txt", "a");
 
-  // While que transfere os dados do arquivo semana para o arquivo temp.txt sem
-  // o agendamento que o usuário quer excluir
+  // While que transfere os dados do arquivo semana para o arquivo temp.txt sem o agendamento que o usuário quer excluir
 
   while (fgets(comparacao, 150, pont_file01) != NULL) {
 
@@ -275,11 +316,44 @@ void printsemana(void) {
   return;
 }
 
+// Função que cria os arquivos .txt
+
+void inicia(){
+
+  FILE *pont_file;
+
+  pont_file = fopen("segunda.txt","a");
+  fclose(pont_file);
+  
+  pont_file = fopen("terca.txt","a");
+  fclose(pont_file);
+
+  pont_file = fopen("quarta.txt","a");
+  fclose(pont_file);
+
+  pont_file = fopen("quinta.txt","a");
+  fclose(pont_file);
+
+  pont_file = fopen("sexta.txt","a");
+  fclose(pont_file);
+
+  pont_file = fopen("sabado.txt","a");
+  fclose(pont_file);
+
+  pont_file = fopen("domingo.txt","a");
+  fclose(pont_file);
+  
+}
+
 int main() {
 
   char diasemana[15];
   int comando01, comando02;
   FILE *pont_file;
+
+  //Chamando a função inicia
+
+  inicia();
 
   // Sentando a localidade usando a localidade padrão do sistema
 
@@ -320,7 +394,7 @@ int main() {
         break;
 
       case 2:
-        listar("terça.txt");
+        listar("terca.txt");
         break;
 
       case 3:
@@ -363,7 +437,7 @@ int main() {
         break;
 
       case 2:
-        adicionar("terça.txt");
+        adicionar("terca.txt");
         break;
 
       case 3:
@@ -406,7 +480,7 @@ int main() {
         break;
 
       case 2:
-        editar("terça.txt");
+        editar("terca.txt");
         break;
 
       case 3:
@@ -449,7 +523,7 @@ int main() {
         break;
 
       case 2:
-        excluir("terça.txt");
+        excluir("terca.txt");
         break;
 
       case 3:
