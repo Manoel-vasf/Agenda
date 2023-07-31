@@ -12,7 +12,6 @@
 #define c_azul "\033[34m"
 #define c_ciano "\033[36m"
 
-
 // Função responsável por listar os agendamentos
 
 void listar(char semana[15]) {
@@ -30,6 +29,7 @@ void listar(char semana[15]) {
     printf("\t\t%s─────────────────────────────────────────────────────────────────────────────────────%s\n", c_amarela, c_padrao);
     printf("                                           %s%s%s",c_azul, listagem, c_padrao);
     printf("\t\t%s─────────────────────────────────────────────────────────────────────────────────────%s\n", c_amarela, c_padrao);
+
   }
 
   fclose(pont_file);
@@ -40,11 +40,9 @@ void listar(char semana[15]) {
 
   // Se a quantidade de caracteres for igual a 6, vai ser impressa na tela a mensagem agenda vazia
 
-  if(num_char==6){
+  if(num_char==1){
 
-       printf("\t\t─────────────────────────────────────────────────────────────────────────────────────\n");
-       printf("                                        Sua agenda está vazia!!!\n");
-       printf("\t\t─────────────────────────────────────────────────────────────────────────────────────");
+       printf("                                        %sSua agenda está vazia!!!%s\n", c_vermelha, c_padrao);
     
   }
 
@@ -59,7 +57,8 @@ void adicionar(char semana[15]) {
 
   char agendamento[150], comparacao[150], caractere;
   int count = 5;
-  FILE *pont_file;
+  FILE *pont_file01;
+  FILE *pont_file02;
 
   printf("\n\nHorário (obs: o formato da hora é 00:00)\n\n");
   scanf("%s", &agendamento[0]);
@@ -69,11 +68,11 @@ void adicionar(char semana[15]) {
 
   while (caractere != '.') {
 
-    scanf("%c", &caractere);
+         scanf("%c", &caractere);
 
-    agendamento[count] = caractere;
+         agendamento[count] = caractere;
 
-    count++;
+         count++;
   }
 
   // Colocando o \0 no lugar do ponto indicando o final da string
@@ -86,9 +85,9 @@ void adicionar(char semana[15]) {
 
   // Filtro para ver se o agendamento já existe
 
-  pont_file = fopen(semana, "r");
+  pont_file01 = fopen(semana, "r");
 
-  while(fgets(comparacao, 150, pont_file) != NULL){
+  while(fgets(comparacao, 150, pont_file01) != NULL){
 
         if (strcmp(agendamento, comparacao) == -10) {
 
@@ -97,15 +96,15 @@ void adicionar(char semana[15]) {
          } 
   }
 
-  fclose(pont_file);
+  fclose(pont_file01);
 
   // Parte que coloca o agendamento dentro do arquivo e imprime o resultado dessa execução
 
-  pont_file = fopen(semana, "a");
+  pont_file01 = fopen(semana, "a");
 
   if(strcmp(agendamento, comparacao) != -10){
     
-      fprintf(pont_file, "%s\n", agendamento);
+      fprintf(pont_file01, "%s\n", agendamento);
 
       printf("\n\n\n\t\t\t\t\t\t\t\t%sAgendamento adicionado com sucesso!!!%s\n\n", c_verde, c_padrao);
 
@@ -115,7 +114,52 @@ void adicionar(char semana[15]) {
     
   }
 
-  fclose(pont_file);
+  fclose(pont_file01);
+
+  // Abrindo os arquivos necessários para a operação do while
+
+  pont_file01 = fopen(semana, "r");
+  pont_file02 = fopen("temp.txt", "a");
+
+  // While que transfere os dados do arquivo semana para o arquivo temp.txt sem o agendamento vazio
+
+  while (fgets(comparacao, 150, pont_file01) != NULL) {
+
+    if (comparacao[0] != '\n') {
+
+      fprintf(pont_file02, "%s", comparacao);
+    }
+  }
+
+  // Fechando os arquivos
+
+  fclose(pont_file01);
+  fclose(pont_file02);
+
+  // Excluindo o arquivo semana
+
+  remove(semana);
+
+  // Abrindo os arquivos necessários para a operação do while
+
+  pont_file01 = fopen(semana, "a");
+  pont_file02 = fopen("temp.txt", "r");
+
+  // While que transfere os dados do arquivo temp.txt para o arquivo semana sem o agendamento vazio
+
+  while (fgets(comparacao, 150, pont_file02) != NULL) {
+
+    fprintf(pont_file01, "%s", comparacao);
+  }
+
+  // Fechando os arquivos
+
+  fclose(pont_file01);
+  fclose(pont_file02);
+
+  // Excluindo o temp.txt
+
+  remove("temp.txt");
 
   return;
 }
@@ -128,6 +172,8 @@ void editar(char semana[15]) {
   int count;
   FILE *pont_file01;
   FILE *pont_file02;
+
+  listar(semana);
 
   printf(
       "\n\nHorário que você quer editar (obs: o formato da hora é 00:00)\n\n");
@@ -232,7 +278,31 @@ void editar(char semana[15]) {
 
   remove("temp.txt");
 
-  printf("\n\n\n\t\t\t\t\t\t\t\t%sAgendamento editado com sucesso!!!%s\n\n", c_verde, c_padrao);
+  // Abrindo o arquivo necessário para a operação do while
+
+  pont_file01 = fopen(semana, "r");
+
+  // While que verifica o resultado da operação e imprime na tela  
+
+  while (fgets(comparacao, 150, pont_file01) != NULL) {
+
+        if (strcmp(editar, comparacao) == -10) {
+
+            printf("\n\n\n\t\t\t\t\t\t\t\t%sAgendamento editado com sucesso!!!%s\n\n", c_verde, c_padrao);
+            break;
+
+    } else {
+
+       printf("\n\n\n\t\t\t\t\t\t\t\t%sFalha ao editar o agendamento!!!%s\n\n", c_vermelha, c_padrao);
+       break;
+          
+    }
+  }
+
+  // Fechando o arquivo
+
+  fclose(pont_file01);
+  
 }
 
 // Função responsável por excluir os agendamentos
@@ -240,9 +310,11 @@ void editar(char semana[15]) {
 void excluir(char semana[15]) {
 
   char excluir[150], comparacao[150], caractere;
-  int count;
+  int count, verificar_agen=0;
   FILE *pont_file01;
   FILE *pont_file02;
+
+  listar(semana);
 
   printf("\n\nHorário (obs: o formato da hora é 00:00)\n\n");
 
@@ -279,7 +351,14 @@ void excluir(char semana[15]) {
 
     if (strcmp(excluir, comparacao) != -10) {
 
-      fprintf(pont_file02, "%s", comparacao);
+        fprintf(pont_file02, "%s", comparacao);
+      
+    }else{
+
+      // verificar_agen é usado para verificar se o agendamento está na agenda
+      
+      verificar_agen=1;
+    
     }
   }
 
@@ -314,7 +393,30 @@ void excluir(char semana[15]) {
 
   remove("temp.txt");
 
-  printf("\n\n\n\t\t\t\t\t\t\t\t%sAgendamento excluído com sucesso!!!%s\n\n", c_verde, c_padrao);
+  // Abrindo o arquivo necessário para a operação do while
+
+  pont_file01 = fopen(semana, "r");
+
+  // While que verifica o resultado da operação e imprime na tela  
+
+  while (fgets(comparacao, 150, pont_file01) != NULL) {
+
+        if (strcmp(excluir, comparacao) != -10 && verificar_agen==1) {
+
+            printf("\n\n\n\t\t\t\t\t\t\t\t%sAgendamento excluído com sucesso!!!%s\n\n", c_verde, c_padrao);
+            break;
+            
+    } else {
+
+            printf("\n\n\n\t\t\t\t\t\t\t\t%sFalha ao excluir o agendamento!!!%s\n\n", c_vermelha, c_padrao);
+            break;
+          
+    }
+  }
+
+  // Fechando o arquivo
+
+  fclose(pont_file01);
 }
 
 // Função que printa os comandos dos dias da semana
