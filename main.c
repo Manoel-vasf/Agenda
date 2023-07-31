@@ -498,8 +498,7 @@ int main() {
 
       scanf("%d", &comando02);
 
-      // Switch case que chama a função listar conforme o número do dia da
-      // semana que foi digitado
+      // Switch case que chama a função listar conforme o número do dia da semana que foi digitado
 
       switch (comando02) {
 
@@ -541,8 +540,7 @@ int main() {
 
       scanf("%d", &comando02);
 
-      // Switch case que chama a função adicionar conforme o número do dia da
-      // semana que foi digitado
+      // Switch case que chama a função adicionar conforme o número do dia da semana que foi digitado
 
       switch (comando02) {
 
@@ -662,7 +660,7 @@ int main() {
       }
     }
   }
-
-  return 0;
   
+  return 0;
+
 }
